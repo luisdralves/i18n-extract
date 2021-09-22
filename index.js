@@ -3,6 +3,7 @@
 
 const { ArgumentParser } = require('argparse');
 const fs = require('fs')
+const deepmerge = require('deepmerge')
 
 const parser = new ArgumentParser({
   description: 'i18n extract usage'
@@ -42,7 +43,7 @@ function updateJSON(o, locale, namespace, value) {
       console.error(err)
       updatedData = (JSON.stringify(value, null, 2))
     } else {
-      updatedData = (JSON.stringify(Object.assign(value, JSON.parse(data)), null, 2))
+      updatedData = (JSON.stringify(deepmerge(value, JSON.parse(data)), null, 2))
     }
     fs.writeFile(`${o}/${locale}/${namespace}.json`, updatedData, (err) => {
       if (err) {
